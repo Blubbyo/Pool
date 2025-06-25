@@ -5,13 +5,14 @@ body {
 table {
   border-collapse: collapse;
   width: 100%;
-  table-layout: fixed;
+  /*table-layout: fixed;*/
 }
 th, td {
   border: 1px solid #ccc;
   text-align: center;
   padding: 5px;
   cursor: pointer;
+  height: 50px;
 }
 th {
   background-color: #f0f0f0;
@@ -29,4 +30,7 @@ td:first-child {
   width: 300px;
   white-space: normal;
   word-wrap: break-word;
+}
+.today-column {
+  background-color: #ffff99;
 }

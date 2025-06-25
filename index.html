@@ -2,14 +2,12 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Pool-Pflege</title>
+  <title>Pool-Wartungstabelle</title>
   <link rel="stylesheet" href="styles.css">
-  
+  <link rel="icon" type="image/png" href="./Pool.png">
 </head>
 <body>
-  <h2>Pool-Wartungstabelle</h2>
   <table id="poolTable"></table>
-
   <script>
     const tasks = {
       "Täglich": [
@@ -35,6 +33,7 @@
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth();
+	const dayToday = today.getDate();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     // Generate header row
@@ -47,6 +46,9 @@
       const date = new Date(year, month, d);
       const weekday = date.toLocaleDateString('de-DE', { weekday: 'short' });
       th.textContent = `${weekday}\n${d.toString().padStart(2, '0')}.${(month+1).toString().padStart(2, '0')}`;
+      if (d === dayToday) {
+        th.classList.add("today-column");
+      }
       headerRow.appendChild(th);
     }
     table.appendChild(headerRow);
@@ -77,6 +79,9 @@
           if (savedClicks[cellId]) {
             cell.classList.add("clicked");
             cell.textContent = "\u2713";
+          }
+          if (d === dayToday) {
+            cell.classList.add("today-column");
           }
           cell.addEventListener("click", () => {
             cell.classList.toggle("clicked");
