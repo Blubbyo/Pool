@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Interaktive Pool-Tabelle</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      table-layout: fixed;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 5px;
+      cursor: pointer;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    td.clicked {
+      background-color: #c8f7c5;
+    }
+    .section-header {
+      background-color: #d0e0ff;
+      font-weight: bold;
+      text-align: left;
+    }
+    td:first-child {
+      text-align: left;
+      width: 300px;
+      white-space: normal;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h2>Pool-Wartungstabelle</h2>
+  <table id="poolTable"></table>
+
+  <script>
+    const tasks = {
+      "Täglich": [
+        'Oberflächenskimmer entleeren',
+        '5h+ Filteranlage betreiben (26m³/6m³)',
+        'Sichtkontrolle: Pooloberfläche auf Schmutz, Trübung oder Algen prüfen'
+      ],
+      "Wöchentlich": [
+        'Wasser testen: Mit Teststreifen oder Pooltester (pH 7,0-7,4, Chlor 0,3-1,5 mg/l)',
+        'Chemie dosieren: Multitabs in den Skimmerkorb legen (nie direkt in den Pool)',
+        'Rückspülen: Wöchentlich oder bei hohem Filterdruck (>1bar), danach Nachspülen (30s)',
+        'Boden saugen & Wände bürsten',
+        'Algenschutzmittel'
+      ],
+      "Sonstiges": [
+        'Skimmerhöhe regelmäßig kontrollieren',
+        'Bei Rückspülung: Skimmerkorb leeren, da darin oft feiner Schmutz gesammelt wird'
+      ]
+    };
+
+    const table = document.getElementById("poolTable");
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Generate header row
+    const headerRow = document.createElement("tr");
+    const emptyCell = document.createElement("th");
+    emptyCell.textContent = "";
+    headerRow.appendChild(emptyCell);
+    for (let d = 1; d <= daysInMonth; d++) {
+      const th = document.createElement("th");
+      const date = new Date(year, month, d);
+      const weekday = date.toLocaleDateString('de-DE', { weekday: 'short' });
+      th.textContent = `${weekday}\n${d.toString().padStart(2, '0')}.${(month+1).toString().padStart(2, '0')}`;
+      headerRow.appendChild(th);
+    }
+    table.appendChild(headerRow);
+
+    const cookieKey = `poolTable_${year}-${month+1}`;
+    const savedClicks = JSON.parse(localStorage.getItem(cookieKey) || '{}');
+
+    let rowIndex = 0;
+
+    for (const [category, items] of Object.entries(tasks)) {
+      const sectionRow = document.createElement("tr");
+      const sectionCell = document.createElement("td");
+      sectionCell.colSpan = daysInMonth + 1;
+      sectionCell.textContent = category;
+      sectionCell.classList.add("section-header");
+      sectionRow.appendChild(sectionCell);
+      table.appendChild(sectionRow);
+
+      items.forEach(task => {
+        const row = document.createElement("tr");
+        const taskCell = document.createElement("td");
+        taskCell.textContent = task;
+        row.appendChild(taskCell);
+
+        for (let d = 1; d <= daysInMonth; d++) {
+          const cell = document.createElement("td");
+          const cellId = `${rowIndex}_${d}`;
+          if (savedClicks[cellId]) {
+            cell.classList.add("clicked");
+            cell.textContent = "\u2713";
+          }
+          cell.addEventListener("click", () => {
+            cell.classList.toggle("clicked");
+            cell.textContent = cell.classList.contains("clicked") ? "\u2713" : "";
+            savedClicks[cellId] = cell.classList.contains("clicked");
+            localStorage.setItem(cookieKey, JSON.stringify(savedClicks));
+          });
+          row.appendChild(cell);
+        }
+        table.appendChild(row);
+        rowIndex++;
+      });
+    }
+
+    // Cleanup old month cookie
+    const allKeys = Object.keys(localStorage);
+    allKeys.forEach(key => {
+      if (key.startsWith("poolTable_") && key !== cookieKey) {
+        localStorage.removeItem(key);
+      }
+    });
+  </script>
+</body>
+</html>
