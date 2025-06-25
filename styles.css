@@ -1,0 +1,32 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+th, td {
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 5px;
+  cursor: pointer;
+}
+th {
+  background-color: #f0f0f0;
+}
+td.clicked {
+  background-color: #c8f7c5;
+}
+.section-header {
+  background-color: #d0e0ff;
+  font-weight: bold;
+  text-align: left;
+}
+td:first-child {
+  text-align: left;
+  width: 300px;
+  white-space: normal;
+  word-wrap: break-word;
+}
