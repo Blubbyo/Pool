@@ -8,7 +8,7 @@
     "Wöchentlich": [
       'Wasser testen pH 7,0-7,4',
 	  'Wasser testen Chlor 0,3-1,5 mg/l)',
-      'Chemie dosieren: Multitabs in den Skimmerkorb legen (nie direkt in den Pool)',
+      'Chemie dosieren: Multitabs in den Skimmerkorb legen',
       'Rückspülen: Wöchentlich oder bei hohem Filterdruck (>1bar), danach Nachspülen (30s)',
       'Boden saugen',
       'Wände bürsten',
