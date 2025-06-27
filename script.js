@@ -23,7 +23,7 @@
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const monthYearText = today.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
 
-  document.getElementById("monthYear").textContent = monthYearText;
+  /* document.getElementById("monthYear").textContent = monthYearText; */
 
   const cookieKey = `poolTable_${year}-${month + 1}`;
   const savedClicks = JSON.parse(localStorage.getItem(cookieKey) || '{}');
