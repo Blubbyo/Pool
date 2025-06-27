@@ -110,3 +110,34 @@ th:first-child {
   font-weight: bold;
 }
 
+/* Dropdown wie Text anzeigen */
+td select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  text-align: center;
+  width: 100%;
+  padding: 0;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Optional: kein Pfeil in Firefox */
+td select::-ms-expand {
+  display: none;
+}
+
+/* Optional: Pfeil mit eigenem Symbol */
+td select::after {
+  content: none;
+}
+
+/* Bei Auswahl aktiv Rahmen zeigen */
+td select:focus {
+  outline: 1px solid #999;
+  background: #fff;
+}
+

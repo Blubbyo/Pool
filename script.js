@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+﻿document.addEventListener("DOMContentLoaded", () => {
   const tasks = {
     "Täglich": [
       'Oberflächenskimmer entleeren / höhe kontrollieren',
@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
       'Sichtkontrolle: Pooloberfläche auf Schmutz, Trübung oder Algen prüfen'
     ],
     "Wöchentlich": [
-      'Wasser testen: Mit Teststreifen oder Pooltester (pH 7,0-7,4, Chlor 0,3-1,5 mg/l)',
+      'Wasser testen pH 7,0-7,4',
+	  'Wasser testen Chlor 0,3-1,5 mg/l)',
       'Chemie dosieren: Multitabs in den Skimmerkorb legen (nie direkt in den Pool)',
       'Rückspülen: Wöchentlich oder bei hohem Filterdruck (>1bar), danach Nachspülen (30s)',
       'Boden saugen',
@@ -59,42 +60,83 @@ document.addEventListener("DOMContentLoaded", () => {
       sectionRow.appendChild(sectionCell);
       table.appendChild(sectionRow);
 
-      items.forEach(task => {
-        const row = document.createElement("tr");
-        const taskCell = document.createElement("td");
-        taskCell.textContent = task;
-        row.appendChild(taskCell);
+items.forEach(task => {
+  const row = document.createElement("tr");
+  const taskCell = document.createElement("td");
+  taskCell.textContent = task;
+  row.appendChild(taskCell);
 
-        for (let d = 1; d <= daysInMonth; d++) {
-          const cellId = `${rowIndex}_${d}`;
-          const cell = document.createElement("td");
-          if (savedClicks[cellId]) {
-            cell.classList.add("clicked");
-            cell.textContent = "✓";
-          }
-          if (d === dayToday) cell.classList.add("today-column");
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cellId = `${rowIndex}_${d}`;
+    const cell = document.createElement("td");
 
-          const date = new Date(year, month, d);
-          if (date.getDay() === 1) cell.classList.add("week-separator"); // Montag
-
-		cell.addEventListener("click", () => {
-		  cell.classList.toggle("clicked");
-		  cell.textContent = cell.classList.contains("clicked") ? "✓" : "";
-		  savedClicks[cellId] = cell.classList.contains("clicked");
-		  localStorage.setItem(cookieKey, JSON.stringify(savedClicks));
-
-		  // Woche neu prüfen
-		  document.querySelectorAll(".week-missing").forEach(el => el.classList.remove("week-missing"));
-		  highlightUnfinishedWeeklyTasks();
-		});
-
-
-          row.appendChild(cell);
-        }
-
-        table.appendChild(row);
-        rowIndex++;
+    if (task.startsWith("Wasser testen pH")) {
+      // Dropdown für pH
+      const select = document.createElement("select");
+      ["–", "<6.8", "6.8", "6.9", "7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", ">7.6"].forEach(val => {
+        const option = document.createElement("option");
+        option.value = val;
+        option.textContent = val;
+        select.appendChild(option);
       });
+      select.value = savedClicks[cellId] || "–";
+
+      select.addEventListener("change", () => {
+        savedClicks[cellId] = select.value;
+        localStorage.setItem(cookieKey, JSON.stringify(savedClicks));
+        document.querySelectorAll(".week-missing").forEach(el => el.classList.remove("week-missing"));
+        highlightUnfinishedWeeklyTasks();
+      });
+
+      cell.appendChild(select);
+
+    } else if (task.startsWith("Wasser testen Chlor")) {
+      // Dropdown für Chlor
+      const select = document.createElement("select");
+      ["–", "0.0", "0.3", "0.6", "1.0", "1.5", ">1.5"].forEach(val => {
+        const option = document.createElement("option");
+        option.value = val;
+        option.textContent = val;
+        select.appendChild(option);
+      });
+      select.value = savedClicks[cellId] || "–";
+
+      select.addEventListener("change", () => {
+        savedClicks[cellId] = select.value;
+        localStorage.setItem(cookieKey, JSON.stringify(savedClicks));
+        document.querySelectorAll(".week-missing").forEach(el => el.classList.remove("week-missing"));
+        highlightUnfinishedWeeklyTasks();
+      });
+
+      cell.appendChild(select);
+
+    } else {
+      // Standard-Klickzelle mit ✓
+      if (savedClicks[cellId]) {
+        cell.classList.add("clicked");
+        cell.textContent = "✓";
+      }
+      cell.addEventListener("click", () => {
+        cell.classList.toggle("clicked");
+        cell.textContent = cell.classList.contains("clicked") ? "✓" : "";
+        savedClicks[cellId] = cell.classList.contains("clicked");
+        localStorage.setItem(cookieKey, JSON.stringify(savedClicks));
+        document.querySelectorAll(".week-missing").forEach(el => el.classList.remove("week-missing"));
+        highlightUnfinishedWeeklyTasks();
+      });
+    }
+
+    const date = new Date(year, month, d);
+    if (d === dayToday) cell.classList.add("today-column");
+    if (date.getDay() === 1) cell.classList.add("week-separator");
+
+    row.appendChild(cell);
+  }
+
+  table.appendChild(row);
+  rowIndex++;
+});
+
     }
 
     highlightUnfinishedWeeklyTasks(); // initial prüfen
@@ -135,7 +177,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 
 		Object.values(cellMap).forEach(weekCells => {
-		  const weekClicked = weekCells.some(cell => cell.classList.contains("clicked"));
+		  const weekClicked = weekCells.some(cell => {
+  const select = cell.querySelector("select");
+  if (select) return select.value !== "–"; // Dropdown ausgefüllt
+  return cell.classList.contains("clicked"); // Standardzelle ✓
+});
+
 		  if (!weekClicked) {
 			weekCells.forEach(cell => cell.classList.add("week-missing"));
 		  }
