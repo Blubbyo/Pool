@@ -6,6 +6,27 @@
   --section-bg: #dbeeff;
 }
 
+/* Für Bildschirme mit maximal 600px Breite (typisch für Smartphones) */
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+
+  th, td {
+    font-size: 12px;
+    padding: 0.25rem;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  .section-header td {
+    font-size: 13px;
+  }
+}
+
+
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -26,6 +47,7 @@ h1 {
 
 .table-wrapper {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
@@ -67,7 +89,7 @@ th {
 td:first-child, th:first-child {
   position: sticky;
   left: 0;
-  background: var(--section-bg);
+  background: #f0f0f0;
   z-index: 2;
 }
 
