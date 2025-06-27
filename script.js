@@ -13,8 +13,6 @@
       'Wände bürsten',
       'Algenschutzmittel'
     ],
-	"Monatlich": [
-	],
     "Sonstiges": [
       'Skimmerhöhe regelmäßig kontrollieren',
       'Bei Rückspülung: Skimmerkorb leeren, da darin oft feiner Schmutz gesammelt wird'
