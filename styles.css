@@ -67,7 +67,7 @@ th {
 td:first-child, th:first-child {
   position: sticky;
   left: 0;
-
+  background: var(--section-bg);
   z-index: 2;
 }
 
