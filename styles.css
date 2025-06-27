@@ -1,6 +1,6 @@
 :root {
   --bg: #f5f9ff;
-  --highlight: #e0f7fa;
+  --highlight: #d2f319;
   --primary: #0077b6;
   --done: #4caf50;
   --section-bg: #dbeeff;
@@ -23,7 +23,7 @@
 
   .section-header td {
     font-size: 13px;
-    padding: 0;
+	padding: 0;
   }
 }
 
@@ -76,14 +76,14 @@ th {
   padding: 0.75rem;
 }
 
+.today-column {
+  background-color: var(--highlight);
+}
+
 .clicked {
   background-color: var(--done);
   color: white;
   font-weight: bold;
-}
-
-.today-column {
-  background-color: var(--highlight);
 }
 
 /* Erste Spalte fixieren */
@@ -98,3 +98,15 @@ td:first-child, th:first-child {
 th:first-child {
   z-index: 3;
 }
+
+/* Senkrechte Linie vor jedem Montag */
+.week-separator {
+  border-left: 3px solid #000;
+}
+
+.week-missing {
+  background-color: #ffebee !important; /* leichtes Rot als Warnung */
+  color: #c62828; /* dunkles Rot für Text */
+  font-weight: bold;
+}
+
