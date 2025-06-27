@@ -1,36 +1,77 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
+:root {
+  --bg: #f5f9ff;
+  --highlight: #e0f7fa;
+  --primary: #0077b6;
+  --done: #4caf50;
+  --section-bg: #dbeeff;
 }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: #333;
+}
+
+.container {
+  max-width: 100%;
+  padding: 1rem;
+}
+
+h1 {
+  text-align: center;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
-  /*table-layout: fixed;*/
+  min-width: 900px;
 }
+
 th, td {
   border: 1px solid #ccc;
+  padding: 0.5rem;
   text-align: center;
-  padding: 5px;
-  cursor: pointer;
-  height: 50px;
 }
+
 th {
-  background-color: #f0f0f0;
+  background: #f0f0f0;
+  font-weight: bold;
+  white-space: pre-line;
 }
-td.clicked {
-  background-color: #c8f7c5;
-}
-.section-header {
-  background-color: #d0e0ff;
+
+.section-header td {
+  background: var(--section-bg);
   font-weight: bold;
   text-align: left;
+  padding: 0.75rem;
 }
-td:first-child {
-  text-align: left;
-  width: 300px;
-  white-space: normal;
-  word-wrap: break-word;
+
+.clicked {
+  background-color: var(--done);
+  color: white;
+  font-weight: bold;
 }
+
 .today-column {
-  background-color: #ffff99;
+  background-color: var(--highlight);
+}
+
+/* Erste Spalte fixieren */
+td:first-child, th:first-child {
+  position: sticky;
+  left: 0;
+
+  z-index: 2;
+}
+
+/* Erhöhte Priorität für den Header */
+th:first-child {
+  z-index: 3;
 }
