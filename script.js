@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const tasks = {
     "Täglich": [
       'Oberflächenskimmer entleeren / höhe kontrollieren',
@@ -23,7 +23,7 @@
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const monthYearText = today.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
 
-  /* document.getElementById("monthYear").textContent = monthYearText; */
+  /* document.getElementById("monthYear").textContent = monthYearText;*/
 
   const cookieKey = `poolTable_${year}-${month + 1}`;
   const savedClicks = JSON.parse(localStorage.getItem(cookieKey) || '{}');
@@ -39,10 +39,13 @@
       const th = document.createElement("th");
       const date = new Date(year, month, d);
       const weekday = date.toLocaleDateString('de-DE', { weekday: 'short' });
+
       th.textContent = `${weekday}\n${String(d).padStart(2, '0')}.${String(month + 1).padStart(2, '0')}`;
       if (d === dayToday) th.classList.add("today-column");
+      if (date.getDay() === 1) th.classList.add("week-separator"); // Montag
       headerRow.appendChild(th);
     }
+
     table.appendChild(headerRow);
   };
 
@@ -71,20 +74,76 @@
           }
           if (d === dayToday) cell.classList.add("today-column");
 
-          cell.addEventListener("click", () => {
-            cell.classList.toggle("clicked");
-            cell.textContent = cell.classList.contains("clicked") ? "✓" : "";
-            savedClicks[cellId] = cell.classList.contains("clicked");
-            localStorage.setItem(cookieKey, JSON.stringify(savedClicks));
-          });
+          const date = new Date(year, month, d);
+          if (date.getDay() === 1) cell.classList.add("week-separator"); // Montag
+
+		cell.addEventListener("click", () => {
+		  cell.classList.toggle("clicked");
+		  cell.textContent = cell.classList.contains("clicked") ? "✓" : "";
+		  savedClicks[cellId] = cell.classList.contains("clicked");
+		  localStorage.setItem(cookieKey, JSON.stringify(savedClicks));
+
+		  // Woche neu prüfen
+		  document.querySelectorAll(".week-missing").forEach(el => el.classList.remove("week-missing"));
+		  highlightUnfinishedWeeklyTasks();
+		});
+
 
           row.appendChild(cell);
         }
+
         table.appendChild(row);
         rowIndex++;
       });
     }
+
+    highlightUnfinishedWeeklyTasks(); // initial prüfen
   };
+
+	 function getISOWeekKey(date) {
+	  const temp = new Date(date);
+	  temp.setHours(0, 0, 0, 0);
+	  temp.setDate(temp.getDate() + 3 - ((temp.getDay() + 6) % 7));
+	  const week1 = new Date(temp.getFullYear(), 0, 4);
+	  const weekNumber = 1 + Math.round(((temp - week1) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
+	  return `${temp.getFullYear()}-KW${String(weekNumber).padStart(2, '0')}`;
+	}
+
+  
+	const highlightUnfinishedWeeklyTasks = () => {
+	  const allRows = Array.from(table.querySelectorAll("tr"));
+	  let isInWeeklySection = false;
+
+	  allRows.forEach(row => {
+		if (row.classList.contains("section-header")) {
+		  isInWeeklySection = row.textContent.trim() === "Wöchentlich";
+		  return;
+		}
+
+		if (!isInWeeklySection) return;
+
+		const cells = Array.from(row.querySelectorAll("td")).slice(1); // Zellen für jeden Tag
+		const cellMap = {}; // Woche → [Zellen]
+
+		cells.forEach((cell, i) => {
+		  const date = new Date(year, month, i + 1);
+		  // ISO Woche: Woche beginnt am Montag (1), Sonntag = 7
+		  const weekKey = getISOWeekKey(date);
+
+		  if (!cellMap[weekKey]) cellMap[weekKey] = [];
+		  cellMap[weekKey].push(cell);
+		});
+
+		Object.values(cellMap).forEach(weekCells => {
+		  const weekClicked = weekCells.some(cell => cell.classList.contains("clicked"));
+		  if (!weekClicked) {
+			weekCells.forEach(cell => cell.classList.add("week-missing"));
+		  }
+		});
+	  });
+	};
+
+
 
   const cleanupOldCookies = () => {
     for (const key of Object.keys(localStorage)) {
