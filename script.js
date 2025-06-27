@@ -1,7 +1,7 @@
 ﻿document.addEventListener("DOMContentLoaded", () => {
   const tasks = {
     "Täglich": [
-      'Oberflächenskimmer entleeren',
+      'Oberflächenskimmer entleeren / höhe kontrollieren',
       '5h+ Filteranlage betreiben (26m³/6m³)',
       'Sichtkontrolle: Pooloberfläche auf Schmutz, Trübung oder Algen prüfen'
     ],
@@ -12,10 +12,6 @@
       'Boden saugen',
       'Wände bürsten',
       'Algenschutzmittel'
-    ],
-    "Sonstiges": [
-      'Skimmerhöhe regelmäßig kontrollieren',
-      'Bei Rückspülung: Skimmerkorb leeren, da darin oft feiner Schmutz gesammelt wird'
     ]
   };
 
