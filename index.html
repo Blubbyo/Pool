@@ -15,6 +15,41 @@
     </div>
   </main>
 
-  <script src="script.js" defer></script>
+  <h2>Verbrauchsdokumentation</h2>
+	<table id="verbrauchTable">
+		<thead>
+			<tr>
+			  <th>Datum</th>
+			  <th>200g Chlortabletten</th>
+			  <th>pH Minus (g)</th>
+			  <th>pH Plus (g)</th>
+			  <th>Algenschutzmittel (ml)</th>
+			  <th>Phenol Red (Stk)</th>
+			  <th>DPD Nr. 1 (Stk)</th>
+			  <th>Aktion</th>
+			</tr>
+		</thead>
+		<tbody id="verbrauchBody">
+		  <!-- Wird dynamisch per JavaScript befüllt -->
+		</tbody>
+	</table>
+	<button id="addRowBtn">Zeile hinzufügen</button>
+	<button id="exportBtn">CSV exportieren</button>  
+	
+	
+<h2>Monatsansicht (nur Ansicht)</h2>
+<div id="monthNav" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+  <button id="prevMonthBtn">◀️</button>
+  <span id="displayedMonth"></span>
+  <button id="nextMonthBtn">▶️</button>
+</div>
+
+<div class="table-wrapper">
+  <table id="previousMonthTable"></table>
+</div>
+
+
+	
+	<script src="script.js" defer></script>
 </body>
 </html>
