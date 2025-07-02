@@ -3,6 +3,16 @@ import { loadClickData, saveClickData } from './firestore-clicks.js';
 import { loadPrices, savePrices } from './firestore-preise.js';
 import { loadVerbrauchData, saveVerbrauchData, createVerbrauchRow } from './firestore-verbrauch.js';
 
+const produktNamen = [
+  "200g Chlortabletten",
+  "pH Minus",
+  "pH Plus",
+  "Algenschutzmittel",
+  "Phenol Red",
+  "DPD Nr. 1"
+];
+
+
 window.addEventListener("DOMContentLoaded", () => {
   // Verbrauchs-Button
   const addRowBtn = document.getElementById("addRowBtn");
