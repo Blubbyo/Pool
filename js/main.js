@@ -1,4 +1,5 @@
 ﻿// js/main.js
+import { db } from './firebase-init.js';
 import { loadClickData, saveClickData } from './firestore-clicks.js';
 import { loadPrices, savePrices } from './firestore-preise.js';
 import { loadVerbrauchData, saveVerbrauchData, createVerbrauchRow } from './firestore-verbrauch.js';
