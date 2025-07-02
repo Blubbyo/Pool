@@ -1,4 +1,5 @@
-﻿import { ref, get, set } from "firebase/database";
+// js/firestore-verbrauch.js
+import { ref, get, set } from  "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
 export async function loadClickData(db) {
   const snapshot = await get(ref(db, 'clickdaten'));
@@ -37,19 +38,19 @@ const daysInMonth = new Date(year, month + 1, 0).getDate();
 let clickData = {};  // die Daten aus Firebase
 
 // Lade Daten aus Firebase
-async function loadClickData() {
-  try {
-    const snapshot = await get(ref(db, 'clickdaten'));
-    if (snapshot.exists()) {
-      return snapshot.val();
-    } else {
-      return {};
-    }
-  } catch (err) {
-    console.error('Fehler beim Laden der Daten:', err);
-    return {};
-  }
-}
+//async function loadClickData() {
+//  try {
+//    const snapshot = await get(ref(db, 'clickdaten'));
+//    if (snapshot.exists()) {
+//      return snapshot.val();
+//    } else {
+//      return {};
+//    }
+//  } catch (err) {
+//    console.error('Fehler beim Laden der Daten:', err);
+//    return {};
+//  }
+//}
 
 // Speichere Daten in Firebase
 async function saveClickData(data) {
