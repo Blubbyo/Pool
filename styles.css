@@ -169,7 +169,7 @@ td select:focus {
   cursor: pointer;
   border-radius: 5px;
 }
-#addRowBtn, #exportBtn , #addPriceBtn{
+#addRowBtn, #exportBtn , #preisSaveBtn{
   margin-top: 1rem;
   margin-right: 1rem;
   padding: 0.5rem 1rem;
