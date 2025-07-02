@@ -2,6 +2,7 @@
 import { loadClickData, saveClickData } from './firestore-clicks.js';
 import { loadPrices, savePrices } from './firestore-preise.js';
 import { loadVerbrauchData, saveVerbrauchData, createVerbrauchRow } from './firestore-verbrauch.js';
+import { initPoolTable } from './poolTable.js';
 
 const produktNamen = [
   "200g Chlortabletten",
@@ -32,7 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const row = createPriceRow();
   document.getElementById("preisBody").appendChild(row);
   savePrices();
-    
+  
 });
 
   // Verbrauchsdaten laden
@@ -51,6 +52,7 @@ async function initApp() {
   renderTable(clickData);
   const preise = await loadPrices();
   renderPreise(preise);
+  initPoolTable(db);
 }
 
 // Beispiel für Event-Listener für Klickdaten
@@ -59,8 +61,10 @@ function handleCellChange(cellId, value) {
   saveClickData(monthKey, clickData);
 }
 
-function renderTable(data) {
-  // TODO: Deine DOM-Logik hier mit clickData
+function renderTable(data = {}) {
+  
+
+  
 }
 
 function renderPreise(preise) {
