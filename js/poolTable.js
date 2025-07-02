@@ -7,7 +7,7 @@ export async function loadClickData(db) {
   return snapshot.exists() ? snapshot.val() : {};
 }
 
-export async function saveClickData(db, data) {
+export async function saveClickData(data) {
   if (!data) {
     console.error("Keine Daten zum Speichern");
     return;
