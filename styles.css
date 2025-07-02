@@ -169,7 +169,7 @@ td select:focus {
   cursor: pointer;
   border-radius: 5px;
 }
-#addRowBtn, #exportBtn {
+#addRowBtn, #exportBtn , #addPriceBtn{
   margin-top: 1rem;
   margin-right: 1rem;
   padding: 0.5rem 1rem;
@@ -180,7 +180,7 @@ td select:focus {
   border-radius: 5px;
 }
 
-#verbrauchTable button {
+#verbrauchTable button, #preisTable  button{
   background: none;
   border: none;
   font-size: 1.2rem;

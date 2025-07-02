@@ -1,4 +1,15 @@
-﻿document.addEventListener("DOMContentLoaded", () => {
+﻿// Produkte fix definieren
+const produktNamen = [
+  "200g Chlortabletten",
+  "pH Minus",
+  "pH Plus",
+  "Algenschutzmittel",
+  "Phenol Red",
+  "DPD Nr. 1"
+];
+
+
+document.addEventListener("DOMContentLoaded", () => {
   const tasks = {
     "Täglich": [
       'Oberflächenskimmer entleeren / höhe kontrollieren',
@@ -285,31 +296,49 @@ function loadVerbrauchData() {
 }
 
 
-document.getElementById("exportBtn").addEventListener("click", () => {
-  const rows = document.querySelectorAll("#verbrauchBody tr");
-  const csvRows = [
-    ["Datum", "200g Chlortabletten", "pH Minus", "pH Plus", "Algenschutzmittel", "Phenol Red", "DPD Nr. 1"]
-  ];
+//document.getElementById("exportBtn").addEventListener("click", () => {
+//  const rows = document.querySelectorAll("#verbrauchBody tr");
+//  const csvRows = [
+//    ["Datum", "200g Chlortabletten", "pH Minus", "pH Plus", "Algenschutzmittel", "Phenol Red", "DPD Nr. 1"]
+//  ];
 
-  rows.forEach(tr => {
-    const inputs = tr.querySelectorAll("input");
-    if (inputs.length !== 7) return;
+//  rows.forEach(tr => {
+//    const inputs = tr.querySelectorAll("input");
+//    if (inputs.length !== 7) return;
 
-    const row = Array.from(inputs).map(input => `"${input.value}"`);
-    csvRows.push(row);
-  });
+//    const row = Array.from(inputs).map(input => `"${input.value}"`);
+//    //csvRows.push(row);
+//const getPriceFor = (productName, dateStr) => {
+//  const all = JSON.parse(localStorage.getItem(PRICE_KEY) || "[]")
+//    .filter(p => p.name === productName && p.ab <= dateStr)
+//    .sort((a, b) => b.ab.localeCompare(a.ab)); // neuester zuerst
 
-  const csvString = csvRows.map(r => r.join(",")).join("\n");
-  const blob = new Blob([csvString], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
+//  return all.length > 0 ? all[0].preis : 0;
+//};
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `Verbrauch_${new Date().toISOString().slice(0, 10)}.csv`;
-  a.click();
+//const row = Array.from(inputs).map(input => input.value);
+//const dateStr = row[0];
 
-  URL.revokeObjectURL(url);
-});
+//const cost = produktNamen.map((name, i) => {
+//  const menge = parseFloat(row[i + 1]) || 0;
+ // const preis = getPriceFor(name, dateStr);
+ // return (menge * preis).toFixed(2);
+//});
+//csvRows.push([...row, ...cost]);
+
+//  });
+
+//  const csvString = csvRows.map(r => r.join(",")).join("\n");
+//  const blob = new Blob([csvString], { type: "text/csv" });
+//  const url = URL.createObjectURL(blob);
+
+//  const a = document.createElement("a");
+//  a.href = url;
+//  a.download = `Verbrauch_${new Date().toISOString().slice(0, 10)}.csv`;
+//  a.click();
+
+//  URL.revokeObjectURL(url);
+//});
 
 let viewYear, viewMonth; // global für Navigation
 
@@ -423,6 +452,92 @@ viewYear = today.getMonth() === 0 ? today.getFullYear() - 1 : today.getFullYear(
 viewMonth = today.getMonth() === 0 ? 11 : today.getMonth() - 1;
 renderMonthTable(viewYear, viewMonth);
 
+const PRICE_KEY = "preisListe";
+
+
+
+// Preis hinzufügen
+document.getElementById("addPriceBtn").addEventListener("click", () => {
+  const row = createPriceRow();
+  document.getElementById("preisBody").appendChild(row);
+  savePrices();
+});
+
+function createPriceRow(data = {}) {
+  const row = document.createElement("tr");
+
+  // Produkt-Dropdown
+  const productCell = document.createElement("td");
+  const select = document.createElement("select");
+  produktNamen.forEach(name => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    select.appendChild(option);
+  });
+  select.value = data.name || "";
+  select.addEventListener("change", savePrices);
+  productCell.appendChild(select);
+  row.appendChild(productCell);
+
+  // gültig-ab
+  const dateCell = document.createElement("td");
+  const dateInput = document.createElement("input");
+  dateInput.type = "date";
+  dateInput.value = data.ab || "";
+  dateInput.addEventListener("change", savePrices);
+  dateCell.appendChild(dateInput);
+  row.appendChild(dateCell);
+
+  // Preis
+  const preisCell = document.createElement("td");
+  const preisInput = document.createElement("input");
+  preisInput.type = "number";
+  preisInput.step = "0.01";
+  preisInput.min = "0";
+  preisInput.value = data.preis || "";
+  preisInput.addEventListener("change", savePrices);
+  preisCell.appendChild(preisInput);
+  row.appendChild(preisCell);
+
+  // Löschen
+  const delCell = document.createElement("td");
+  const delBtn = document.createElement("button");
+  delBtn.textContent = "🗑";
+  delBtn.addEventListener("click", () => {
+    row.remove();
+    savePrices();
+  });
+  delCell.appendChild(delBtn);
+  row.appendChild(delCell);
+
+  return row;
+}
+
+function savePrices() {
+  const data = [];
+  document.querySelectorAll("#preisBody tr").forEach(tr => {
+    const [name, ab, preis] = tr.querySelectorAll("input, select");
+    if (name && ab && preis) {
+      data.push({
+        name: name.value,
+        ab: ab.value,
+        preis: parseFloat(preis.value)
+      });
+    }
+  });
+  localStorage.setItem(PRICE_KEY, JSON.stringify(data));
+}
+
+function loadPrices() {
+  const saved = JSON.parse(localStorage.getItem(PRICE_KEY) || "[]");
+  const tbody = document.getElementById("preisBody");
+  saved.forEach(row => {
+    const r = createPriceRow(row);
+    tbody.appendChild(r);
+  });
+}
+
 
 // Beim Start laden
   loadVerbrauchData();  
@@ -430,4 +545,6 @@ renderMonthTable(viewYear, viewMonth);
   createTaskRows();
   //createPreviousMonthTable();
   cleanupOldCookies();
+  loadPrices();
+
 });
