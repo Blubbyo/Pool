@@ -74,3 +74,54 @@ function renderPreise(preise) {
     tbody.appendChild(row);
   });
 }
+
+function createPriceRow(data = {}) {
+  const row = document.createElement("tr");
+
+  // Produkt-Dropdown
+  const productCell = document.createElement("td");
+  const select = document.createElement("select");
+  produktNamen.forEach(name => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    select.appendChild(option);
+  });
+  select.value = data.name || "";
+  select.addEventListener("change", savePrices);
+  productCell.appendChild(select);
+  row.appendChild(productCell);
+
+  // gültig-ab
+  const dateCell = document.createElement("td");
+  const dateInput = document.createElement("input");
+  dateInput.type = "date";
+  dateInput.value = data.ab || "";
+  dateInput.addEventListener("change", savePrices);
+  dateCell.appendChild(dateInput);
+  row.appendChild(dateCell);
+
+  // Preis
+  const preisCell = document.createElement("td");
+  const preisInput = document.createElement("input");
+  preisInput.type = "number";
+  preisInput.step = "0.01";
+  preisInput.min = "0";
+  preisInput.value = data.preis || "";
+  preisInput.addEventListener("change", savePrices);
+  preisCell.appendChild(preisInput);
+  row.appendChild(preisCell);
+
+  // Löschen
+  const delCell = document.createElement("td");
+  const delBtn = document.createElement("button");
+  delBtn.textContent = "🗑";
+  delBtn.addEventListener("click", () => {
+    row.remove();
+    savePrices();
+  });
+  delCell.appendChild(delBtn);
+  row.appendChild(delCell);
+
+  return row;
+}
