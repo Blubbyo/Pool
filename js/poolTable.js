@@ -7,7 +7,7 @@ export async function loadClickData(db) {
   return snapshot.exists() ? snapshot.val() : {};
 }
 
-export async function saveClickData(data) {
+export async function saveClickData( data) {
   if (!data) {
     console.error("Keine Daten zum Speichern");
     return;
@@ -18,8 +18,14 @@ export async function saveClickData(data) {
   const month = today.getMonth() + 1; // +1 weil getMonth() von 0–11 geht
   const key = `poolTable_${year}-${month}`;
 
-  await set(ref(db, `clickdaten/${key}`), data);
+  try {
+    await set(ref(db, `clickdaten/${key}`), data);
+    console.log(`Clickdaten unter '${key}' erfolgreich gespeichert.`);
+  } catch (err) {
+    console.error("Fehler beim Speichern der Clickdaten:", err);
+  }
 }
+
 
 const table = document.getElementById("poolTable");
 
