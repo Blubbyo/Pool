@@ -14,7 +14,8 @@ export async function loadClickData() {
     if (snapshot.exists()) {
       const data = snapshot.val();
       console.log(`Clickdaten von '${key}' geladen.`, data);
-      return data;
+      //return data;
+      renderTable(data):
     } else {
       console.log(`Keine Clickdaten unter '${key}' gefunden.`);
       return {}; // leeres Objekt zurückgeben
