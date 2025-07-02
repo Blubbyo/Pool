@@ -53,14 +53,14 @@ let clickData = {};  // die Daten aus Firebase
 //}
 
 // Speichere Daten in Firebase
-async function saveClickData(data) {
-  try {
-    await set(ref(db, 'clickdaten'), data);
-    console.log('Daten erfolgreich gespeichert');
-  } catch (err) {
-    console.error('Fehler beim Speichern der Daten:', err);
-  }
-}
+//async function saveClickData(data) {
+//  try {
+//    await set(ref(db, 'clickdaten'), data);
+//    console.log('Daten erfolgreich gespeichert');
+//  } catch (err) {
+//    console.error('Fehler beim Speichern der Daten:', err);
+//  }
+//}
 
 // Erzeuge Tabellenkopf mit Tagen
 function createHeaderRow() {
