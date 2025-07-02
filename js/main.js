@@ -28,7 +28,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Preise speichern Button – überprüfe ID und passe ggf. an
   document.getElementById("preisSaveBtn").addEventListener("click", () => {
+  //savePrices();
+  const row = createPriceRow();
+  document.getElementById("preisBody").appendChild(row);
   savePrices();
+    
 });
 
   // Verbrauchsdaten laden
