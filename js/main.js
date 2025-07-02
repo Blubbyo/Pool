@@ -32,32 +32,41 @@ function renderPreise(preise) {
   });
 }
 
-// Preise speichern
-document.getElementById("preisSaveBtn").addEventListener("click", () => {
-  const data = []; // aus DOM sammeln
-  document.querySelectorAll("#preisBody tr").forEach(tr => {
-    const [name, ab, preis] = tr.querySelectorAll("input, select");
-    if (name && ab && preis) {
-      data.push({
-        name: name.value,
-        ab: ab.value,
-        preis: parseFloat(preis.value)
-      });
-    }
-  });
-  savePrices(data);
-});
-
 import { loadVerbrauchData, saveVerbrauchData, createVerbrauchRow } from './firestore-verbrauch.js';
-document.getElementById("addRowBtn").addEventListener("click", () => {
-  const tbody = document.getElementById("verbrauchBody");
-  const newRow = createVerbrauchRow();
-  tbody.insertBefore(newRow, tbody.firstChild);
-  saveVerbrauchData(); // sofort speichern
+
+window.addEventListener("DOMContentLoaded", () => {
+  const addRowBtn = document.getElementById("addRowBtn");
+  if (addRowBtn) {
+    addRowBtn.addEventListener("click", () => {
+      const tbody = document.getElementById("verbrauchBody");
+      const newRow = createVerbrauchRow();
+      tbody.insertBefore(newRow, tbody.firstChild);
+      saveVerbrauchData();
+    });
+  } else {
+    console.warn("Button #addRowBtn nicht gefunden!");
+  }
+
+  const preisSaveBtn = document.getElementById("preisSaveBtn");
+  if (preisSaveBtn) {
+    preisSaveBtn.addEventListener("click", () => {
+      const data = [];
+      document.querySelectorAll("#preisBody tr").forEach(tr => {
+        const [name, ab, preis] = tr.querySelectorAll("input, select");
+        if (name && ab && preis) {
+          data.push({
+            name: name.value,
+            ab: ab.value,
+            preis: parseFloat(preis.value)
+          });
+        }
+      });
+      savePrices(data);
+    });
+  } else {
+    console.warn("Button #preisSaveBtn nicht gefunden!");
+  }
+
+  loadVerbrauchData();
+  initApp();
 });
-
-loadVerbrauchData();
-	
-
-
-initApp();
