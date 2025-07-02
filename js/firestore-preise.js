@@ -14,7 +14,7 @@ import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/1
 //}
 
 
-async function loadPrices() {
+export async function loadPrices() {
   const dbRef = ref(db, "preisListe");
   const snapshot = await get(dbRef);
   if (snapshot.exists()) {
@@ -26,7 +26,7 @@ async function loadPrices() {
   }
 }
 
-function savePrices(data) {
+export async function savePrices(data) {
   // data ist ein Array von Preisobjekten
   set(ref(db, "preisListe"), data)
     .then(() => console.log("Preise gespeichert"))
