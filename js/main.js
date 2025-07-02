@@ -4,17 +4,6 @@ import { loadPrices, savePrices } from './firestore-preise.js';
 
 import { loadVerbrauchData, saveVerbrauchData, createVerbrauchRow } from './firestore-verbrauch.js';
 
-document.getElementById("addRowBtn").addEventListener("click", () => {
-  const tbody = document.getElementById("verbrauchBody");
-  const newRow = createVerbrauchRow();
-  tbody.insertBefore(newRow, tbody.firstChild);
-  saveVerbrauchData(); // sofort speichern
-});
-
-loadVerbrauchData();
-
-
-
 const today = new Date();
 const monthKey = `${today.getFullYear()}-${today.getMonth() + 1}`;
 let clickData = {};
@@ -61,7 +50,14 @@ document.getElementById("preisSaveBtn").addEventListener("click", () => {
   savePrices(data);
 });
 
+document.getElementById("addRowBtn").addEventListener("click", () => {
+  const tbody = document.getElementById("verbrauchBody");
+  const newRow = createVerbrauchRow();
+  tbody.insertBefore(newRow, tbody.firstChild);
+  saveVerbrauchData(); // sofort speichern
+});
 
+loadVerbrauchData();
 	
 
 
