@@ -42,11 +42,10 @@ export async function savePrices() {
 
     if (!select || !dateInput || !numberInput) return;
 
-    // Datum als String im ISO-Format yyyy-mm-dd
-    const abDate = dateInput.value; // z.B. "2025-07-02"
+    const abDate = dateInput.value;
     const preis = parseFloat(numberInput.value);
 
-    if (!select.value || !abDate || isNaN(preis)) return; // ggf. ignorieren oder validieren
+    if (!select.value || !abDate || isNaN(preis)) return;
 
     data.push({
       name: select.value,
@@ -55,7 +54,6 @@ export async function savePrices() {
     });
   });
 
-  // Nun data als Objekt mit Index-Schlüsseln für Realtime DB vorbereiten:
   const obj = {};
   data.forEach((item, index) => {
     obj[index] = item;
@@ -65,6 +63,6 @@ export async function savePrices() {
     await set(ref(db, 'preisListe'), obj);
     console.log("Preise gespeichert");
   } catch (err) {
-    console.error("Fehler beim Speichern:", err);
+    console.error("Fehler beim Speichern der Preise:", err);
   }
 }
