@@ -74,7 +74,7 @@ const month = today.getMonth();
 const dayToday = today.getDate();
 const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-let clickData = {};  // die Daten aus Firebase
+//let clickData = {};  // die Daten aus Firebase
 
 // Lade Daten aus Firebase
 //async function loadClickData() {
