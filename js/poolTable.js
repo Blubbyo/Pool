@@ -2,6 +2,10 @@
 import { db } from './firebase-init.js';
 import { ref, get, set } from  "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
+// Oben im Script (global):
+let clickData = {};
+
+
 export async function loadClickData() {
   const today = new Date();
   const year = today.getFullYear();
@@ -14,8 +18,7 @@ export async function loadClickData() {
     if (snapshot.exists()) {
       const data = snapshot.val();
       console.log(`Clickdaten von '${key}' geladen.`, data);
-      //return data;
-      renderTable(data);
+      return data;
     } else {
       console.log(`Keine Clickdaten unter '${key}' gefunden.`);
       return {}; // leeres Objekt zurückgeben
@@ -258,7 +261,8 @@ function highlightUnfinishedWeeklyTasks() {
   });
 }
 
-export async function initPoolTable(db) {
-  const clickData = await loadClickData(db);
-  renderTable(db, clickData);
+export async function initPoolTable() {
+  clickData = await loadClickData(); // ← globale Variable aktualisieren
+  renderTable(clickData);           // ← korrekt übergeben
 }
+
