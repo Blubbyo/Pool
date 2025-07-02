@@ -2,11 +2,29 @@
 import { db } from './firebase-init.js';
 import { ref, get, set } from  "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-export async function loadClickData(db) {
-  const snapshot = await get(ref(db, 'clickdaten'));
-  return snapshot.exists() ? snapshot.val() : {};
-}
+export async function loadClickData() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1; // +1, da Januar = 0
+  const key = `poolTable_${year}-${month}`;
 
+  try {
+    const snapshot = await get(ref(db, `clickdaten/${key}`));
+
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      console.log(`Clickdaten von '${key}' geladen.`, data);
+      return data;
+    } else {
+      console.log(`Keine Clickdaten unter '${key}' gefunden.`);
+      return {}; // leeres Objekt zurückgeben
+    }
+
+  } catch (err) {
+    console.error("Fehler beim Laden der Clickdaten:", err);
+    return {}; // Fehlerfall: ebenfalls leeres Objekt zurückgeben
+  }
+}
 export async function saveClickData( data) {
   if (!data) {
     console.error("Keine Daten zum Speichern");
