@@ -12,7 +12,6 @@ const produktNamen = [
   "DPD Nr. 1"
 ];
 
-
 window.addEventListener("DOMContentLoaded", () => {
   // Verbrauchs-Button
   const addRowBtn = document.getElementById("addRowBtn");
@@ -28,25 +27,9 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // Preise speichern Button – überprüfe ID und passe ggf. an
-  const preisSaveBtn = document.getElementById("preisSaveBtn");
-  if (preisSaveBtn) {
-    preisSaveBtn.addEventListener("click", () => {
-      const data = [];
-      document.querySelectorAll("#preisBody tr").forEach(tr => {
-        const [name, ab, preis] = tr.querySelectorAll("input, select");
-        if (name && ab && preis) {
-          data.push({
-            name: name.value,
-            ab: ab.value,
-            preis: parseFloat(preis.value)
-          });
-        }
-      });
-      savePrices(data);
-    });
-  } else {
-    console.warn("Button #preisSaveBtn nicht gefunden!");
-  }
+  document.getElementById("preisSaveBtn").addEventListener("click", () => {
+  savePrices();
+});
 
   // Verbrauchsdaten laden
   loadVerbrauchData();
@@ -84,6 +67,7 @@ function renderPreise(preise) {
     tbody.appendChild(row);
   });
 }
+
 
 function createPriceRow(data = {}) {
   const row = document.createElement("tr");

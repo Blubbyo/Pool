@@ -37,39 +37,35 @@
 		</tbody>
 	</table>
 	<button id="addRowBtn">Zeile hinzufügen</button>
-	<!--<button id="exportBtn">CSV exportieren</button>  -->
 	
-<h2>Preise verwalten</h2>
-<table id="preisTable">
-  <thead>
-    <tr>
-      <th>Produkt</th>
-      <th>gültig ab</th>
-      <th>Preis (€ pro Einheit)</th>
-      <th>Aktion</th>
-    </tr>
-  </thead>
-  <tbody id="preisBody">
-    <!-- Dynamisch -->
-  </tbody>
-</table>
-<button id="preisSaveBtn">Preis hinzufügen</button>
-
+	<h2>Preise verwalten</h2>
+	<table id="preisTable">
+	  <thead>
+		<tr>
+		  <th>Produkt</th>
+		  <th>gültig ab</th>
+		  <th>Preis (€ pro Einheit)</th>
+		  <th>Aktion</th>
+		</tr>
+	  </thead>
+	  <tbody id="preisBody">
+		<!-- Dynamisch -->
+	  </tbody>
+	</table>
+	<button id="preisSaveBtn">Preis hinzufügen</button>
 	
-	
-<h2>Monatsansicht (nur Ansicht)</h2>
-<div id="monthNav" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-  <button id="prevMonthBtn">◀️</button>
-  <span id="displayedMonth"></span>
-  <button id="nextMonthBtn">▶️</button>
-</div>
+	<h2>Monatsansicht (nur Ansicht)</h2>
+	<div id="monthNav" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+		<button id="prevMonthBtn">◀️</button>
+		<span id="displayedMonth"></span>
+		<button id="nextMonthBtn">▶️</button>
+	</div>
 
-<div class="table-wrapper">
-  <table id="previousMonthTable"></table>
-</div>
+	<div class="table-wrapper">
+		<table id="previousMonthTable"></table>
+	</div>
 
-<script type="module" src="./js/main.js" defer></script>
-
+	<script type="module" src="./js/main.js" defer></script>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 ﻿// js/firestore-preise.js
 import { db } from './firebase-init.js';
 //import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+import { getDatabase, ref, set, get , child} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
 
 //export async function loadPrices() {
@@ -31,23 +31,40 @@ export async function loadPrices() {
   }
 }
 
-export async function savePrices(data) {
-  try {
-    // Umwandeln von Array in Objekt mit Index-Schlüsseln
-    const obj = {};
-    data.forEach((item, index) => {
-      // Datum formatieren im ISO-Format (yyyy-mm-dd)
-      if (item.ab instanceof Date) {
-        item.ab = item.ab.toISOString().slice(0, 10);
-      } else if (typeof item.ab === "string") {
-        // Optional: Prüfen ob Datum schon im richtigen Format ist
-        // oder hier bei Bedarf umwandeln
-      }
-      obj[index] = item;
+export async function savePrices() {
+  const rows = document.querySelectorAll("#preisBody tr");
+  const data = [];
+
+  rows.forEach(row => {
+    const select = row.querySelector("select");
+    const dateInput = row.querySelector("input[type=date]");
+    const numberInput = row.querySelector("input[type=number]");
+
+    if (!select || !dateInput || !numberInput) return;
+
+    // Datum als String im ISO-Format yyyy-mm-dd
+    const abDate = dateInput.value; // z.B. "2025-07-02"
+    const preis = parseFloat(numberInput.value);
+
+    if (!select.value || !abDate || isNaN(preis)) return; // ggf. ignorieren oder validieren
+
+    data.push({
+      name: select.value,
+      ab: abDate,
+      preis: preis,
     });
+  });
+
+  // Nun data als Objekt mit Index-Schlüsseln für Realtime DB vorbereiten:
+  const obj = {};
+  data.forEach((item, index) => {
+    obj[index] = item;
+  });
+
+  try {
     await set(ref(db, 'preisListe'), obj);
     console.log("Preise gespeichert");
-  } catch (error) {
-    console.error("Fehler beim Speichern der Preise:", error);
+  } catch (err) {
+    console.error("Fehler beim Speichern:", err);
   }
 }

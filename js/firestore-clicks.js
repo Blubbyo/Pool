@@ -1,4 +1,4 @@
-// js/firestore-clicks.js
+﻿// js/firestore-clicks.js
 import { db } from './firebase-init.js';
 //import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { ref, get, set, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
