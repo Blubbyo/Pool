@@ -3,6 +3,7 @@ import { db } from './firebase-init.js';
 import { ref, get, set } from  "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 import { produktNamen } from './main.js';
 
+
 // Oben im Script (global):
 let clickData = {};
 
@@ -302,16 +303,19 @@ function getPreisZumDatum(name, datum) {
 }
 
 function getVerbrauchsDatenAusTabelle() {
-  const verbrauchDaten = {};
   const tbody = document.getElementById("verbrauchBody");
   const rows = tbody.querySelectorAll("tr");
+  const produktNamen = window.produktNamen || []; // Fallback falls global
 
-  // Liste der Stoffe in der gleichen Reihenfolge wie in den Spalten
-  const stoffe = produktNamen;
-  
+  const stoffe = produktNamen.filter(name =>
+    !["Leistungpumpe (W)", "Laufzeit (h)", "Strompreis"].includes(name)
+  );
+
+  const result = {};
+
   rows.forEach(row => {
-    const inputs = row.querySelectorAll("input[type='date'], input[type='number']");
-    if (inputs.length < produktNamen.length + 1) return; // Sicherheitscheck
+    const inputs = row.querySelectorAll("input");
+    if (inputs.length < 1 + stoffe.length + 3) return; // 1 Date + Stoffe + 3 Sonderfälle
 
     const datumRaw = inputs[0].value;
     if (!datumRaw) return;
@@ -319,27 +323,38 @@ function getVerbrauchsDatenAusTabelle() {
     const datum = new Date(datumRaw);
     const datumStr = datum.toISOString().slice(0, 10);
 
-    if (!verbrauchDaten[datumStr]) {
-      verbrauchDaten[datumStr] = {};
-    }
+    result[datumStr] = {};
 
-    for (let i = 0; i < produktNamen.length; i++) {
-      const menge = parseFloat(inputs[i + 1].value); // +1 wegen Datum vorne
+    // Stoffe
+    for (let i = 0; i < stoffe.length; i++) {
+      const menge = parseFloat(inputs[i + 1].value);
       if (!isNaN(menge) && menge > 0) {
-        verbrauchDaten[datumStr][produktNamen[i]] = menge;
+        result[datumStr][stoffe[i]] = menge;
       }
     }
+
+    // Sonderwerte
+    const leistung = parseFloat(inputs[1 + stoffe.length]?.value);
+    const laufzeit = parseFloat(inputs[2 + stoffe.length]?.value);
+    const strompreis = parseFloat(inputs[3 + stoffe.length]?.value);
+
+    if (!isNaN(leistung)) result[datumStr]["Leistungpumpe (W)"] = leistung;
+    if (!isNaN(laufzeit)) result[datumStr]["Laufzeit (h)"] = laufzeit;
+    if (!isNaN(strompreis)) result[datumStr]["Strompreis"] = strompreis;
   });
 
-  return verbrauchDaten;
+  console.log("Verbrauchsdaten:", result);
+  return result;
 }
+
+window.getVerbrauchsDatenAusTabelle = getVerbrauchsDatenAusTabelle;
 
 
 function addCostSummaryRow() {
   const verbrauchDaten = getVerbrauchsDatenAusTabelle();
-  console.log(verbrauchDaten)
 
-	
+  console.log(verbrauchDaten)
+  
   const costRow = document.createElement("tr");
   const labelCell = document.createElement("td");
   labelCell.textContent = "Kosten (€)";
