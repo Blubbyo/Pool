@@ -383,7 +383,7 @@ function addCostSummaryRow() {
       if (stoff === "Strompreis") continue;         // ebenfalls
 	  if (stoff === "Laufzeit (h)") continue;  // wird separat verrechnet
 
-      const preis = getPreisZumDatum(stoff, datum);
+      const preis = getPreisZumDatum(stoff, datumStr);
       const kosten = menge * preis;
       sum += kosten;
       tooltip += `${stoff}: ${menge} × ${preis.toFixed(3)} € = ${kosten.toFixed(2)} €\n`;
