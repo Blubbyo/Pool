@@ -362,14 +362,15 @@ function addCostSummaryRow() {
     }
 
     // Sonderfall: Stromkosten berechnen
+    // Sonderfall: Stromkosten berechnen
     const leistung = dayData["Leistungpumpe (W)"];
+    const laufzeit = dayData["Laufzeit (h)"];
     const strompreis = dayData["Strompreis"];
-    const laufzeitStd = 5; // z. B. feste Laufzeit 5h täglich – später ggf. dynamisch
 
-    if (leistung && strompreis) {
-      const stromkosten = (leistung * laufzeitStd * strompreis) / 1000;
+    if (leistung && laufzeit && strompreis) {
+      const stromkosten = (leistung * laufzeit * strompreis) / 1000;
       sum += stromkosten;
-      tooltip += `Strom: ${leistung} W × ${laufzeitStd} h × ${strompreis} €/kWh = ${stromkosten.toFixed(2)} €\n`;
+      tooltip += `Strom: ${leistung} W × ${laufzeit} h × ${strompreis} €/kWh = ${stromkosten.toFixed(2)} €\n`;
     }
 
     const cell = document.createElement("td");
@@ -384,4 +385,3 @@ function addCostSummaryRow() {
   table.appendChild(costRow);
 }
 
-console.log("1")
