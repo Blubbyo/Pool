@@ -5,7 +5,7 @@ import { loadPrices, savePrices } from './firestore-preise.js';
 import { loadVerbrauchData, saveVerbrauchData, createVerbrauchRow } from './firestore-verbrauch.js';
 import { initPoolTable } from './poolTable.js';
 
-const produktNamen = [
+export const produktNamen = [
   "200g Chlortabletten",
   "pH Minus",
   "pH Plus",
