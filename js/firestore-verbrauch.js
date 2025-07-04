@@ -59,7 +59,19 @@ export function createVerbrauchRow(rowData = {}) {
       input.min = 0;
       input.step = 0.001;
     }
-    input.value = rowData[field] || "";
+    //input.value = rowData[field] || "";
+	
+    // Standardwerte setzen
+    if (field === "leistung" && rowData[field] === undefined) {
+      input.value = 250;
+    } else if (field === "laufzeit" && rowData[field] === undefined) {
+      input.value = 5;
+    } else if (field === "strompreis" && rowData[field] === undefined) {
+      input.value = 0.36;
+    } else {
+      input.value = rowData[field] || "";
+    }
+	  
     input.addEventListener("change", saveVerbrauchData);
     td.appendChild(input);
     row.appendChild(td);
