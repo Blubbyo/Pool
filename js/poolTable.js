@@ -376,6 +376,7 @@ function addCostSummaryRow() {
     for (const [stoff, menge] of Object.entries(dayData)) {
       if (stoff === "Leistungpumpe (W)") continue;  // wird separat verrechnet
       if (stoff === "Strompreis") continue;         // ebenfalls
+	  if (stoff === "Laufzeit (h)") continue;  // wird separat verrechnet
 
       const preis = getPreisZumDatum(stoff, datum);
       const kosten = menge * preis;
@@ -383,7 +384,6 @@ function addCostSummaryRow() {
       tooltip += `${stoff}: ${menge} × ${preis.toFixed(3)} € = ${kosten.toFixed(2)} €\n`;
     }
 
-    // Sonderfall: Stromkosten berechnen
     // Sonderfall: Stromkosten berechnen
     const leistung = dayData["Leistungpumpe (W)"];
     const laufzeit = dayData["Laufzeit (h)"];
