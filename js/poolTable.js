@@ -307,9 +307,11 @@ function getVerbrauchsDatenAusTabelle() {
   const rows = tbody.querySelectorAll("tr");
   const produktNamen = window.produktNamen || []; // Fallback falls global
 
-  const stoffe = produktNamen.filter(name =>
-    !["Leistungpumpe (W)", "Laufzeit (h)", "Strompreis"].includes(name)
-  );
+//  const stoffe = produktNamen.filter(name =>
+//    !["Leistungpumpe (W)", "Laufzeit (h)", "Strompreis"].includes(name)
+//  );
+
+	const stoffe = produktNamen
 
   const result = {};
 
