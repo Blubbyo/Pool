@@ -353,7 +353,7 @@ window.getVerbrauchsDatenAusTabelle = getVerbrauchsDatenAusTabelle;
 function addCostSummaryRow() {
   const verbrauchDaten = getVerbrauchsDatenAusTabelle();
 
-  console.log(verbrauchDaten)
+  //console.log(verbrauchDaten)
   
   const costRow = document.createElement("tr");
   const labelCell = document.createElement("td");
@@ -369,6 +369,8 @@ function addCostSummaryRow() {
     let sum = 0;
     let tooltip = "";
 
+	console.log(dayData)
+	
     for (const [stoff, menge] of Object.entries(dayData)) {
       if (stoff === "Leistungpumpe (W)") continue;  // wird separat verrechnet
       if (stoff === "Strompreis") continue;         // ebenfalls
