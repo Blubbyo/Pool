@@ -26,7 +26,7 @@ export function saveVerbrauchData() {
 
   rows.forEach(tr => {
     const inputs = tr.querySelectorAll("input");
-    if (inputs.length !== 7) return;
+    if (inputs.length !== 10) return;
 
     data.push({
       date: inputs[0].value,
