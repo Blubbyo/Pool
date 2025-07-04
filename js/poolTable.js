@@ -19,7 +19,7 @@ export async function loadClickData() {
 
     if (snapshot.exists()) {
       const data = snapshot.val();
-      console.log(`Clickdaten von '${key}' geladen.`, data);
+      //console.log(`Clickdaten von '${key}' geladen.`, data);
       return data;
     } else {
       console.log(`Keine Clickdaten unter '${key}' gefunden.`);
@@ -281,7 +281,7 @@ export async function loadPreise() {
         ab: new Date(p.ab),
         preis: parseFloat(p.preis)
       }));
-      console.log("Preise geladen:", preisListe);
+      //console.log("Preise geladen:", preisListe);
     } else {
       console.warn("Keine Preisdaten gefunden.");
     }
@@ -324,9 +324,8 @@ function getVerbrauchsDatenAusTabelle() {
 
     //const datum = new Date(datumRaw);
     //const datumStr = datum.toISOString().slice(0, 10);
-    const datumStr = datumRaw;
-
-	  
+	const datumStr = datumRaw;
+	
     result[datumStr] = {};
 
     // stoffe
@@ -347,7 +346,7 @@ function getVerbrauchsDatenAusTabelle() {
     if (!isNaN(strompreis)) result[datumStr]["Strompreis"] = strompreis;
   });
 
-  console.log("Verbrauchsdaten:", result);
+  //console.log("Verbrauchsdaten:", result);
   return result;
 }
 
@@ -367,8 +366,12 @@ function addCostSummaryRow() {
   costRow.appendChild(labelCell);
 
   for (let d = 1; d <= daysInMonth; d++) {
-    const datum = new Date(year, month, d);
-    const datumStr = datum.toISOString().slice(0, 10);
+    //const datum = new Date(year, month, d);
+    //const datumStr = datum.toISOString().slice(0, 10);
+	
+	const datumStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`; // z. B. "2025-07-02"
+
+	
     const dayData = verbrauchDaten[datumStr] || {};
     let sum = 0;
     let tooltip = "";
