@@ -11,7 +11,9 @@ const produktNamen = [
   "pH Plus",
   "Algenschutzmittel",
   "Phenol Red",
-  "DPD Nr. 1"
+  "DPD Nr. 1",
+  "Leistungpumpe (W)",
+  "Strompreis"
 ];
 
 window.addEventListener("DOMContentLoaded", () => {
