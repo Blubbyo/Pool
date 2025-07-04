@@ -324,7 +324,8 @@ function getVerbrauchsDatenAusTabelle() {
 
     //const datum = new Date(datumRaw);
     //const datumStr = datum.toISOString().slice(0, 10);
-    const datumStr = dateInput.value;
+    const datumStr = datumRaw;
+
 	  
     result[datumStr] = {};
 
