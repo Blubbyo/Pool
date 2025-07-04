@@ -72,7 +72,11 @@ export function createVerbrauchRow(rowData = {}) {
       input.value = rowData[field] || "";
     }
 	  
-    input.addEventListener("change", saveVerbrauchData);
+    //input.addEventListener("change", saveVerbrauchData);
+	input.addEventListener("change", () => {
+	  saveVerbrauchData();
+	  addCostSummaryRow();
+	});
     td.appendChild(input);
     row.appendChild(td);
   });
