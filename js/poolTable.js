@@ -305,19 +305,19 @@ function getPreisZumDatum(name, datum) {
 function getVerbrauchsDatenAusTabelle() {
   const tbody = document.getElementById("verbrauchBody");
   const rows = tbody.querySelectorAll("tr");
-  const produktNamen = window.produktNamen || []; // Fallback falls global
+//const produktNamen = window.produktNamen || []; // Fallback falls global
 
 //  const stoffe = produktNamen.filter(name =>
 //    !["Leistungpumpe (W)", "Laufzeit (h)", "Strompreis"].includes(name)
 //  );
 
-	const stoffe = produktNamen
+//	const stoffe = produktNamen
 
   const result = {};
 
   rows.forEach(row => {
     const inputs = row.querySelectorAll("input");
-    if (inputs.length < 1 + stoffe.length + 3) return; // 1 Date + Stoffe + 3 Sonderfälle
+    if (inputs.length < 1 + produktNamen.length + 3) return; // 1 Date + produktNamen + 3 Sonderfälle
 
     const datumRaw = inputs[0].value;
     if (!datumRaw) return;
@@ -327,18 +327,18 @@ function getVerbrauchsDatenAusTabelle() {
 
     result[datumStr] = {};
 
-    // Stoffe
-    for (let i = 0; i < stoffe.length; i++) {
+    // produktNamen
+    for (let i = 0; i < produktNamen.length; i++) {
       const menge = parseFloat(inputs[i + 1].value);
       if (!isNaN(menge) && menge > 0) {
-        result[datumStr][stoffe[i]] = menge;
+        result[datumStr][produktNamen[i]] = menge;
       }
     }
 
     // Sonderwerte
-    const leistung = parseFloat(inputs[1 + stoffe.length]?.value);
-    const laufzeit = parseFloat(inputs[2 + stoffe.length]?.value);
-    const strompreis = parseFloat(inputs[3 + stoffe.length]?.value);
+    const leistung = parseFloat(inputs[1 + produktNamen.length]?.value);
+    const laufzeit = parseFloat(inputs[2 + produktNamen.length]?.value);
+    const strompreis = parseFloat(inputs[3 + produktNamen.length]?.value);
 
     if (!isNaN(leistung)) result[datumStr]["Leistungpumpe (W)"] = leistung;
     if (!isNaN(laufzeit)) result[datumStr]["Laufzeit (h)"] = laufzeit;
@@ -371,7 +371,7 @@ function addCostSummaryRow() {
     let sum = 0;
     let tooltip = "";
 
-	console.log(dayData)
+	//console.log(dayData)
 	
     for (const [stoff, menge] of Object.entries(dayData)) {
       if (stoff === "Leistungpumpe (W)") continue;  // wird separat verrechnet
