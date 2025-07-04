@@ -208,3 +208,13 @@ td select:focus {
   border-radius: 5px;
   cursor: pointer;
 }
+
+
+@keyframes blink-fade {
+  0%   { background-color: #ffe082; }
+  100% { background-color: inherit; }
+}
+
+tr.kostenzeile.blink td {
+  animation: blink-fade 0.4s ease-out;
+}
