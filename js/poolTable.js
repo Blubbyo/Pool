@@ -270,3 +270,20 @@ export async function initPoolTable() {
   renderTable(clickData);           // ← korrekt übergeben
 }
 
+export async function loadPreise() {
+  try {
+    const snapshot = await get(ref(db, 'preisListe'));
+    if (snapshot.exists()) {
+      preisListe = snapshot.val().map(p => ({
+        name: p.name,
+        ab: new Date(p.ab),
+        preis: parseFloat(p.preis)
+      }));
+      console.log("Preise geladen:", preisListe);
+    } else {
+      console.warn("Keine Preisdaten gefunden.");
+    }
+  } catch (err) {
+    console.error("Fehler beim Laden der Preise:", err);
+  }
+}
