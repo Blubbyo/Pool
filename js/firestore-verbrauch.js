@@ -1,4 +1,4 @@
-﻿// js/firestore-verbrauch.js
+// js/firestore-verbrauch.js
 import { db } from './firebase-init.js';
 import { ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
@@ -35,7 +35,10 @@ export function saveVerbrauchData() {
       phPlus: inputs[3].value,
       algen: inputs[4].value,
       phenol: inputs[5].value,
-      dpd: inputs[6].value
+      dpd: inputs[6].value,
+	  leistung: inputs[7].value,
+	  laufzeit: inputs[8].value,
+	  strompreis: inputs[9].value
     });
   });
 
@@ -46,7 +49,7 @@ export function saveVerbrauchData() {
 
 export function createVerbrauchRow(rowData = {}) {
   const row = document.createElement("tr");
-  const fields = ["date", "chlortabs", "phMinus", "phPlus", "algen", "phenol", "dpd"];
+  const fields = ["date", "chlortabs", "phMinus", "phPlus", "algen", "phenol", "dpd", "leistung", "laufzeit", "strompreis"];
 
   fields.forEach((field, index) => {
     const td = document.createElement("td");
