@@ -1,6 +1,7 @@
 // js/firestore-verbrauch.js
 import { db } from './firebase-init.js';
 import { ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { addCostSummaryRow } from './poolTable.js'; 
 
 const VERBRAUCH_PATH = "verbrauchsdaten";
 
