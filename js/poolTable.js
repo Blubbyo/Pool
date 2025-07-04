@@ -367,9 +367,9 @@ function addCostSummaryRow() {
 
   for (let d = 1; d <= daysInMonth; d++) {
     const datum = new Date(year, month, d);
-    const datumStr = datum.toISOString().slice(0, 10);
+    //const datumStr = datum.toISOString().slice(0, 10);
 	
-	//const datumStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`; // z. B. "2025-07-02"
+    const datumStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`; // z. B. "2025-07-02"
 
 	
     const dayData = verbrauchDaten[datumStr] || {};
