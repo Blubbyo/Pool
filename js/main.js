@@ -13,6 +13,7 @@ const produktNamen = [
   "Phenol Red",
   "DPD Nr. 1",
   "Leistungpumpe (W)",
+  "Laufzeit (h)",
   "Strompreis"
 ];
 
