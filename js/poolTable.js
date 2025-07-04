@@ -243,6 +243,8 @@ function highlightUnfinishedWeeklyTasks() {
       const date = new Date(year, month, i + 1);
       const weekKey = getISOWeekKey(date);
 
+      cell.classList.remove("week-missing");
+      
       if (!cellMap[weekKey]) cellMap[weekKey] = [];
       cellMap[weekKey].push(cell);
     });
