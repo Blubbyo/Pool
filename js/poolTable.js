@@ -322,9 +322,10 @@ function getVerbrauchsDatenAusTabelle() {
     const datumRaw = inputs[0].value;
     if (!datumRaw) return;
 
-    const datum = new Date(datumRaw);
-    const datumStr = datum.toISOString().slice(0, 10);
-
+    //const datum = new Date(datumRaw);
+    //const datumStr = datum.toISOString().slice(0, 10);
+    const datumStr = dateInput.value;
+	  
     result[datumStr] = {};
 
     // stoffe
