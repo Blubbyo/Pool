@@ -354,11 +354,17 @@ window.getVerbrauchsDatenAusTabelle = getVerbrauchsDatenAusTabelle;
 
 
 function addCostSummaryRow() {
+  const table = document.getElementById("poolTable");
+
+  // Alte Kostenzeile entfernen, falls vorhanden
+  const existing = table.querySelector("tr.kostenzeile");
+  if (existing) existing.remove();
+
   const verbrauchDaten = getVerbrauchsDatenAusTabelle();
 
-  //console.log(verbrauchDaten)
-  
   const costRow = document.createElement("tr");
+  costRow.classList.add("kostenzeile");
+
   const labelCell = document.createElement("td");
   labelCell.textContent = "Kosten (€)";
   labelCell.style.fontWeight = "bold";
@@ -366,22 +372,14 @@ function addCostSummaryRow() {
   costRow.appendChild(labelCell);
 
   for (let d = 1; d <= daysInMonth; d++) {
-    const datum = new Date(year, month, d);
-    //const datumStr = datum.toISOString().slice(0, 10);
-	
-    const datumStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`; // z. B. "2025-07-02"
-
-	
+    const datumStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const datum = new Date(datumStr);
     const dayData = verbrauchDaten[datumStr] || {};
     let sum = 0;
     let tooltip = "";
 
-	//console.log(dayData)
-	
     for (const [stoff, menge] of Object.entries(dayData)) {
-      if (stoff === "Leistungpumpe (W)") continue;  // wird separat verrechnet
-      if (stoff === "Strompreis") continue;         // ebenfalls
-	  if (stoff === "Laufzeit (h)") continue;  // wird separat verrechnet
+      if (["Leistungpumpe (W)", "Laufzeit (h)", "Strompreis"].includes(stoff)) continue;
 
       const preis = getPreisZumDatum(stoff, datum);
       const kosten = menge * preis;
@@ -389,7 +387,7 @@ function addCostSummaryRow() {
       tooltip += `${stoff}: ${menge} × ${preis.toFixed(3)} € = ${kosten.toFixed(2)} €\n`;
     }
 
-    // Sonderfall: Stromkosten berechnen
+    // Stromkosten berechnen
     const leistung = dayData["Leistungpumpe (W)"];
     const laufzeit = dayData["Laufzeit (h)"];
     const strompreis = dayData["Strompreis"];
@@ -405,10 +403,14 @@ function addCostSummaryRow() {
     cell.style.backgroundColor = "#e0f7fa";
     cell.style.fontWeight = "bold";
     cell.title = tooltip.trim();
-
     costRow.appendChild(cell);
   }
 
   table.appendChild(costRow);
-}
 
+  // ✨ Aufblinken animieren
+  costRow.classList.add("blink");
+  setTimeout(() => {
+    costRow.classList.remove("blink");
+  }, 400);
+}
