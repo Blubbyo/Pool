@@ -366,10 +366,10 @@ function addCostSummaryRow() {
   costRow.appendChild(labelCell);
 
   for (let d = 1; d <= daysInMonth; d++) {
-    //const datum = new Date(year, month, d);
-    //const datumStr = datum.toISOString().slice(0, 10);
+    const datum = new Date(year, month, d);
+    const datumStr = datum.toISOString().slice(0, 10);
 	
-	const datumStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`; // z. B. "2025-07-02"
+	//const datumStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`; // z. B. "2025-07-02"
 
 	
     const dayData = verbrauchDaten[datumStr] || {};
@@ -383,7 +383,7 @@ function addCostSummaryRow() {
       if (stoff === "Strompreis") continue;         // ebenfalls
 	  if (stoff === "Laufzeit (h)") continue;  // wird separat verrechnet
 
-      const preis = getPreisZumDatum(stoff, datumStr);
+      const preis = getPreisZumDatum(stoff, datum);
       const kosten = menge * preis;
       sum += kosten;
       tooltip += `${stoff}: ${menge} × ${preis.toFixed(3)} € = ${kosten.toFixed(2)} €\n`;
