@@ -1,6 +1,7 @@
 // js/poolTable.js
 import { db } from './firebase-init.js';
 import { ref, get, set } from  "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+import { produktNamen } from './main.js';
 
 // Oben im Script (global):
 let clickData = {};
