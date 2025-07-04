@@ -57,7 +57,7 @@ export function createVerbrauchRow(rowData = {}) {
     input.type = index === 0 ? "date" : "number";
     if (index !== 0) {
       input.min = 0;
-      input.step = 1;
+      input.step = 0.001;
     }
     input.value = rowData[field] || "";
     input.addEventListener("change", saveVerbrauchData);
