@@ -311,15 +311,19 @@ function getVerbrauchsDatenAusTabelle() {
     const stoffSelect = row.querySelector("select");
 
     if (dateInput && mengeInput && stoffSelect) {
-      const datum = dateInput.value;
+      //const datum = dateInput.value;
+	  const datum = new Date(dateInput.value);
+	  const datumStr = datum.toISOString().slice(0, 10);
+
+	  
       const menge = parseFloat(mengeInput.value);
       const stoff = stoffSelect.value;
 
-      if (!datum || isNaN(menge) || !stoff) return;
+      if (!datumStr || isNaN(menge) || !stoff) return;
 
-      if (!verbrauchDaten[datum]) verbrauchDaten[datum] = {};
-      if (!verbrauchDaten[datum][stoff]) verbrauchDaten[datum][stoff] = 0;
-      verbrauchDaten[datum][stoff] += menge;
+      if (!verbrauchDaten[datumStr]) verbrauchDaten[datumStr] = {};
+      if (!verbrauchDaten[datumStr][stoff]) verbrauchDaten[datumStr][stoff] = 0;
+      verbrauchDaten[datumStr][stoff] += menge;
     }
   });
 
@@ -341,16 +345,21 @@ function addCostSummaryRow() {
     const datumStr = datum.toISOString().slice(0, 10);
     const dayData = verbrauchDaten[datumStr] || {};
     let sum = 0;
+    let tooltip = "";
 
     for (const [stoff, menge] of Object.entries(dayData)) {
       const preis = getPreisZumDatum(stoff, datum);
-      sum += menge * preis;
+      const kosten = menge * preis;
+      sum += kosten;
+      tooltip += `${stoff}: ${menge} × ${preis.toFixed(3)} € = ${kosten.toFixed(2)} €\n`;
     }
 
     const cell = document.createElement("td");
     cell.textContent = sum.toFixed(2);
     cell.style.backgroundColor = "#e0f7fa";
     cell.style.fontWeight = "bold";
+    cell.title = tooltip.trim();  // 🧠 Tooltip auf Basis der Berechnung
+
     costRow.appendChild(cell);
   }
 
