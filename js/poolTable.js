@@ -306,15 +306,8 @@ function getVerbrauchsDatenAusTabelle() {
   const rows = tbody.querySelectorAll("tr");
 
   // Liste der Stoffe in der gleichen Reihenfolge wie in den Spalten
-  const stoffe = [
-    "200g Chlortabletten",
-    "pH Minus",
-    "pH Plus",
-    "Algenschutzmittel",
-    "Phenol Red",
-    "DPD Nr. 1"
-  ];
-
+  const stoffe = produktNamen;
+  
   rows.forEach(row => {
     const inputs = row.querySelectorAll("input[type='date'], input[type='number']");
     if (inputs.length < produktNamen.length + 1) return; // Sicherheitscheck
@@ -344,9 +337,6 @@ function getVerbrauchsDatenAusTabelle() {
 function addCostSummaryRow() {
   const verbrauchDaten = getVerbrauchsDatenAusTabelle();
 
-console.log("Verbrauchsdaten:", verbrauchDaten);
-console.log("Preisliste:", preisListe);
-  
   const costRow = document.createElement("tr");
   const labelCell = document.createElement("td");
   labelCell.textContent = "Kosten (€)";
@@ -362,20 +352,36 @@ console.log("Preisliste:", preisListe);
     let tooltip = "";
 
     for (const [stoff, menge] of Object.entries(dayData)) {
+      if (stoff === "Leistungpumpe (W)") continue;  // wird separat verrechnet
+      if (stoff === "Strompreis") continue;         // ebenfalls
+
       const preis = getPreisZumDatum(stoff, datum);
       const kosten = menge * preis;
       sum += kosten;
       tooltip += `${stoff}: ${menge} × ${preis.toFixed(3)} € = ${kosten.toFixed(2)} €\n`;
     }
 
+    // Sonderfall: Stromkosten berechnen
+    const leistung = dayData["Leistungpumpe (W)"];
+    const strompreis = dayData["Strompreis"];
+    const laufzeitStd = 5; // z. B. feste Laufzeit 5h täglich – später ggf. dynamisch
+
+    if (leistung && strompreis) {
+      const stromkosten = (leistung * laufzeitStd * strompreis) / 1000;
+      sum += stromkosten;
+      tooltip += `Strom: ${leistung} W × ${laufzeitStd} h × ${strompreis} €/kWh = ${stromkosten.toFixed(2)} €\n`;
+    }
+
     const cell = document.createElement("td");
     cell.textContent = sum.toFixed(2);
     cell.style.backgroundColor = "#e0f7fa";
     cell.style.fontWeight = "bold";
-    cell.title = tooltip.trim();  // 🧠 Tooltip auf Basis der Berechnung
+    cell.title = tooltip.trim();
 
     costRow.appendChild(cell);
   }
 
   table.appendChild(costRow);
 }
+
+console.log("1")
