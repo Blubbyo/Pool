@@ -353,7 +353,7 @@ function getVerbrauchsDatenAusTabelle() {
 window.getVerbrauchsDatenAusTabelle = getVerbrauchsDatenAusTabelle;
 
 
-function addCostSummaryRow() {
+export function addCostSummaryRow() {
   const table = document.getElementById("poolTable");
 
   // Alte Kostenzeile entfernen, falls vorhanden
