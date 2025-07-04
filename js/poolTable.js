@@ -302,40 +302,51 @@ function getPreisZumDatum(name, datum) {
 
 function getVerbrauchsDatenAusTabelle() {
   const verbrauchDaten = {};
-  const table = document.getElementById("verbrauchTable");
-  const rows = table.querySelectorAll("tbody tr");
+  const tbody = document.getElementById("verbrauchBody");
+  const rows = tbody.querySelectorAll("tr");
+
+  // Liste der Stoffe in der gleichen Reihenfolge wie in den Spalten
+  const stoffe = [
+    "200g Chlortabletten",
+    "pH Minus",
+    "pH Plus",
+    "Algenschutzmittel",
+    "Phenol Red",
+    "DPD Nr. 1"
+  ];
 
   rows.forEach(row => {
-    const dateInput = row.querySelector("input[type='date']");
-    const mengeInput = row.querySelector("input[type='number']");
-    const stoffSelect = row.querySelector("select");
+    const inputs = row.querySelectorAll("input[type='date'], input[type='number']");
+    if (inputs.length < produktNamen.length + 1) return; // Sicherheitscheck
 
-    if (dateInput && mengeInput && stoffSelect) {
-      //const datum = dateInput.value;
-	  const datum = new Date(dateInput.value);
-	  const datumStr = datum.toISOString().slice(0, 10);
+    const datumRaw = inputs[0].value;
+    if (!datumRaw) return;
 
-	  
-      const menge = parseFloat(mengeInput.value);
-      const stoff = stoffSelect.value;
+    const datum = new Date(datumRaw);
+    const datumStr = datum.toISOString().slice(0, 10);
 
-      if (!datumStr || isNaN(menge) || !stoff) return;
+    if (!verbrauchDaten[datumStr]) {
+      verbrauchDaten[datumStr] = {};
+    }
 
-      if (!verbrauchDaten[datumStr]) verbrauchDaten[datumStr] = {};
-      if (!verbrauchDaten[datumStr][stoff]) verbrauchDaten[datumStr][stoff] = 0;
-      verbrauchDaten[datumStr][stoff] += menge;
+    for (let i = 0; i < produktNamen.length; i++) {
+      const menge = parseFloat(inputs[i + 1].value); // +1 wegen Datum vorne
+      if (!isNaN(menge) && menge > 0) {
+        verbrauchDaten[datumStr][produktNamen[i]] = menge;
+      }
     }
   });
 
   return verbrauchDaten;
 }
 
+
 function addCostSummaryRow() {
   const verbrauchDaten = getVerbrauchsDatenAusTabelle();
 
 console.log("Verbrauchsdaten:", verbrauchDaten);
 console.log("Preisliste:", preisListe);
-	
+  
   const costRow = document.createElement("tr");
   const labelCell = document.createElement("td");
   labelCell.textContent = "Kosten (€)";
