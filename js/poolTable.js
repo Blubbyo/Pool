@@ -333,6 +333,9 @@ function getVerbrauchsDatenAusTabelle() {
 function addCostSummaryRow() {
   const verbrauchDaten = getVerbrauchsDatenAusTabelle();
 
+console.log("Verbrauchsdaten:", verbrauchDaten);
+console.log("Preisliste:", preisListe);
+	
   const costRow = document.createElement("tr");
   const labelCell = document.createElement("td");
   labelCell.textContent = "Kosten (€)";
